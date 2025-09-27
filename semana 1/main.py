@@ -26,6 +26,9 @@ def home():
         "status": "‚úÖ Working perfectly"
     }
 
+
+
+
 @app.get("/info/setup")
 def info_setup():
     """Informaci√≥n del entorno de desarrollo"""
@@ -47,9 +50,27 @@ def health_check():
         "environment": "development"
     }
 
+from fastapi import FastAPI
+
+app = FastAPI(title="Mi Primera API")
+
+@app.get("/")
+def hello_world():
+    return {"message": "¬°Mi primera API FastAPI!"}
+
+@app.get("/info")
+def info():
+    return {"api": "FastAPI", "week": 1, "status": "running"}
+
+# NUEVO: Endpoint personalizado (solo si hay tiempo)
+@app.get("/greeting/{name}")
+def greet_user(name: str):
+    return {"greeting": f"¬°Hola {name}!"}
+
+
 if __name__ == "__main__":
     import uvicorn
-    print("Ì∫Ä Iniciando servidor de verificaci√≥n...")
-    print("Ì≥ç Acceder a: http://localhost:8000")
-    print("Ì≥ñ Documentaci√≥n: http://localhost:8000/docs")
+    print("ÔøΩÔøΩÔøΩ Iniciando servidor de verificaci√≥n...")
+    print("ÔøΩÔøΩÔøΩ Acceder a: http://localhost:8000")
+    print("ÔøΩÔøΩÔøΩ Documentaci√≥n: http://localhost:8000/docs")
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
