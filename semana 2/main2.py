@@ -1,92 +1,76 @@
-# Semana 2 - main.py
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import Optional, List
+#!/usr/bin/env python3
+"""
+Script de verificación rápida del setup FastAPI
+"""
 
-# Inicializar la app
-app = FastAPI(title="Semana 2 - API con Type Hints, Pydantic y Parámetros")
+import sys
+import os
+from pathlib import Path
+import subprocess
 
-# ---------------------------
-# Modelos de datos
-# ---------------------------
-class Product(BaseModel):
-    name: str
-    price: int  # en centavos para evitar decimales
-    available: bool = True
+def verificar_setup():
+    print("🚀 VERIFICACIÓN DEL SETUP FASTAPI")
+    print("=" * 50)
 
-class ProductResponse(BaseModel):
-    id: int
-    name: str
-    price: int
-    available: bool
-    message: str = "Successful operation"
+    # Verificar Python
+    print(f"✅ Python version: {sys.version.split()[0]}")
+    print(f"✅ Python path: {sys.executable}")
 
-class ProductListResponse(BaseModel):
-    products: List[dict]
-    total: int
-    message: str = "List retrieved successfully"
+    # Verificar entorno virtual
+    venv = os.environ.get("VIRTUAL_ENV")
+    if venv:
+        print(f"✅ Entorno virtual activo: {venv}")
+    else:
+        print("⚠️  Entorno virtual no detectado")
 
-# ---------------------------
-# Almacenamiento temporal
-# ---------------------------
-products = []
+    # Verificar directorio de trabajo
+    print(f"✅ Directorio actual: {os.getcwd()}")
 
-# ---------------------------
-# Endpoints básicos (Práctica 3)
-# ---------------------------
-@app.get("/")
-def hello_world() -> dict:
-    return {"message": "Semana 2 - API funcionando con FastAPI"}
+    # Verificar instalaciones
+    try:
+        import fastapi
+        print(f"✅ FastAPI instalado: v{fastapi.__version__}")
+    except ImportError:
+        print("❌ FastAPI NO instalado")
+        return False
 
-# ---------------------------
-# Endpoints con Pydantic (Práctica 4)
-# ---------------------------
-@app.post("/products", response_model=ProductResponse)
-def create_product(product: Product) -> ProductResponse:
-    product_dict = product.dict()
-    product_dict["id"] = len(products) + 1
-    products.append(product_dict)
+    try:
+        import uvicorn
+        print(f"✅ Uvicorn instalado: v{uvicorn.__version__}")
+    except ImportError:
+        print("❌ Uvicorn NO instalado")
+        return False
 
-    return ProductResponse(**product_dict, message="Product created successfully")
+    # Verificar archivos del proyecto
+    archivos_requeridos = ["main.py", "requirements.txt", "README.md", ".gitignore"]
+    for archivo in archivos_requeridos:
+        if Path(archivo).exists():
+            print(f"✅ Archivo presente: {archivo}")
+        else:
+            print(f"⚠️  Archivo faltante: {archivo}")
 
-@app.get("/products", response_model=ProductListResponse)
-def get_products() -> ProductListResponse:
-    return ProductListResponse(
-        products=products,
-        total=len(products)
-    )
+    # Verificar configuración Git
+    try:
+        git_user = subprocess.check_output(
+            ['git', 'config', 'user.name'],
+            stderr=subprocess.DEVNULL
+        ).decode().strip()
+        git_email = subprocess.check_output(
+            ['git', 'config', 'user.email'],
+            stderr=subprocess.DEVNULL
+        ).decode().strip()
+        print(f"✅ Git configurado - Usuario: {git_user}")
+        print(f"✅ Git configurado - Email: {git_email}")
+    except:
+        print("⚠️  Git no configurado localmente")
 
-# ---------------------------
-# Endpoints con parámetros (Práctica 5)
-# ---------------------------
-@app.get("/products/{product_id}")
-def get_product(product_id: int) -> dict:
-    for product in products:
-        if product["id"] == product_id:
-            return {"product": product}
-    raise HTTPException(status_code=404, detail="Product not found")
+    print("\n📊 RESUMEN DEL SETUP:")
+    print("✅ Setup básico completado")
+    print("🚀 Listo para ejecutar: uvicorn main:app --reload")
+    print("📖 Documentación disponible en: http://localhost:8000/docs")
+    print("🔎 Verificación disponible en: http://localhost:8000/info/setup")
 
-@app.get("/categories/{category}/products/{product_id}")
-def product_by_category(category: str, product_id: int) -> dict:
-    return {
-        "category": category,
-        "product_id": product_id,
-        "message": f"Searching product {product_id} in {category}"
-    }
+    return True
 
-@app.get("/search")
-def search_products(
-    name: Optional[str] = None,
-    max_price: Optional[int] = None,
-    available: Optional[bool] = None
-) -> dict:
-    results = products.copy()
-
-    if name:
-        results = [p for p in results if name.lower() in p["name"].lower()]
-    if max_price:
-        results = [p for p in results if p["price"] <= max_price]
-    if available is not None:
-        results = [p for p in results if p["available"] == available]
-
-    return {"results": results, "total": len(results)}
+if __name__ == "__main__":
+    verificar_setup()

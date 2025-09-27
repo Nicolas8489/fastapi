@@ -6,9 +6,10 @@ Script de verificación rápida del setup FastAPI
 import sys
 import os
 from pathlib import Path
+import subprocess
 
 def verificar_setup():
-    print("��� VERIFICACION DEL SETUP FASTAPI")
+    print("🚀 VERIFICACIÓN DEL SETUP FASTAPI")
     print("=" * 50)
 
     # Verificar Python
@@ -49,22 +50,25 @@ def verificar_setup():
             print(f"⚠️  Archivo faltante: {archivo}")
 
     # Verificar configuración Git
-    import subprocess
     try:
-        git_user = subprocess.check_output(['git', 'config', 'user.name'],
-                                         stderr=subprocess.DEVNULL).decode().strip()
-        git_email = subprocess.check_output(['git', 'config', 'user.email'],
-                                          stderr=subprocess.DEVNULL).decode().strip()
+        git_user = subprocess.check_output(
+            ['git', 'config', 'user.name'],
+            stderr=subprocess.DEVNULL
+        ).decode().strip()
+        git_email = subprocess.check_output(
+            ['git', 'config', 'user.email'],
+            stderr=subprocess.DEVNULL
+        ).decode().strip()
         print(f"✅ Git configurado - Usuario: {git_user}")
         print(f"✅ Git configurado - Email: {git_email}")
     except:
         print("⚠️  Git no configurado localmente")
 
-    print("\n��� RESUMEN DEL SETUP:")
+    print("\n📊 RESUMEN DEL SETUP:")
     print("✅ Setup básico completado")
-    print("��� Listo para ejecutar: uvicorn main:app --reload")
-    print("��� Documentación disponible en: http://localhost:8000/docs")
-    print("��� Verificación disponible en: http://localhost:8000/info/setup")
+    print("🚀 Listo para ejecutar: uvicorn main:app --reload")
+    print("📖 Documentación disponible en: http://localhost:8000/docs")
+    print("🔎 Verificación disponible en: http://localhost:8000/info/setup")
 
     return True
 

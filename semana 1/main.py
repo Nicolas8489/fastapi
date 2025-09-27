@@ -1,58 +1,39 @@
-#!/usr/bin/env python3
-"""
-Mi Primera API FastAPI - Verificación de Setup
-Desarrollador: [Tu nombre se llenará automáticamente]
-"""
-
 from fastapi import FastAPI
-import os
-import sys
-from datetime import datetime
 
-# Crear instancia de FastAPI
 app = FastAPI(
-    title="Mi Primera API FastAPI",
-    description="API de verificación para setup del bootcamp",
+    title="Mi Primera API - Semana 1",
+    description="Bootcamp Semana 1 - Prácticas y ejercicios iniciales con FastAPI",
     version="1.0.0"
 )
 
+# -------------------------
+# 👇 Aquí van las prácticas y ejercicios de la semana 1
+# -------------------------
+
 @app.get("/")
-def home():
-    """Endpoint principal de verificación"""
-    return {
-        "message": "¡Setup completado correctamente!",
-        "project": "FastAPI Bootcamp - Semana 1",
-        "timestamp": datetime.now().isoformat(),
-        "status": "✅ Working perfectly"
-    }
+def read_root() -> dict:
+    return {"mensaje": "🚀 Bienvenido a la Semana 1 de FastAPI"}
 
+@app.get("/ejercicio")
+def ejercicio() -> dict:
+    return {"resultado": "✅ Este es el ejercicio de la Semana 1"}
 
-
-
+# Endpoint especial de verificación
 @app.get("/info/setup")
-def info_setup():
-    """Información del entorno de desarrollo"""
+def info_setup() -> dict:
     return {
-        "python_version": sys.version,
-        "python_path": sys.executable,
-        "working_directory": os.getcwd(),
-        "virtual_env": os.environ.get("VIRTUAL_ENV", "No detectado"),
-        "user": os.environ.get("USER", "No detectado"),
-        "hostname": os.environ.get("HOSTNAME", "No detectado")
+        "status": "ok",
+        "message": "🚀 Setup FastAPI funcionando correctamente",
+        "docs": "http://localhost:8000/docs",
+        "server": "http://localhost:8000"
     }
 
-@app.get("/health")
-def health_check():
-    """Endpoint de verificación de salud"""
-    return {
-        "status": "healthy",
-        "message": "API running correctly",
-        "environment": "development"
-    }
-
+# -------------------------
+# 🚀 Punto de entrada principal
+# -------------------------
 if __name__ == "__main__":
     import uvicorn
-    print("��� Iniciando servidor de verificación...")
-    print("��� Acceder a: http://localhost:8000")
-    print("��� Documentación: http://localhost:8000/docs")
+    print("🚀 Iniciando servidor de verificación...")
+    print("📌 Acceder a: http://localhost:8000")
+    print("📖 Documentación: http://localhost:8000/docs")
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
