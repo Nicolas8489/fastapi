@@ -1,31 +1,20 @@
-# 📌 Mi API FastAPI - Semana 2
+# Mi API FastAPI - Semana 2
 
-## 🚀 Descripción
-API desarrollada con **FastAPI**, mejorada respecto a la Semana 1 con:
-- Type Hints
-- Modelos Pydantic
-- Endpoints POST
-- Parámetros de ruta y query
-- Response Models
+## 📌 ¿Qué hace?
 
----
+API mejorada con validación automática de datos y type hints.
 
-## ✅ Checklist de Verificación (Ejercicio 1)
+## 🚀 Nuevos Features (Semana 2)
 
-- [x] **Type hints** en funciones (`-> dict`, `name: str`, etc.)
-- [x] **Modelo Pydantic** creado (`class Product(BaseModel): ...`)
-- [x] **Endpoint POST** que recibe un modelo Pydantic
-- [x] **Endpoint GET con ID** (`/products/{id}`)
-- [x] **API funcionando** con `uvicorn main:app --reload`
-- [x] **Documentación interactiva** visible en `/docs`
+- ✅ Type hints en todas las funciones  
+- ✅ Validación automática con Pydantic  
+- ✅ Endpoint POST para crear productos  
+- ✅ Parámetros de ruta (`/products/{id}`)  
+- ✅ Búsqueda con parámetros query (`/search`)  
 
----
-
-## 🛠️ Instalación y ejecución
+## ▶️ ¿Cómo ejecutar?
 
 ```bash
-# Instalar dependencias
-pip install fastapi pydantic uvicorn
-
-# Ejecutar servidor
+pip install -r requirements.txt
 uvicorn main:app --reload
+
