@@ -1,5 +1,5 @@
 from typing import List, Optional
-from models.product_models import Product
+from app.models import Product  # Ajustado para coincidir con la estructura app/models.py
 
 # Base de datos simulada en memoria
 products_db: List[Product] = [

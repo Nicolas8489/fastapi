@@ -1,15 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from app.main import app
+from app.database import engine, Base
 from sqlalchemy.orm import sessionmaker
-import os
 
-from main import app
-from database import get_db, Base
-
-# Base de datos de prueba (en memoria)
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -24,11 +19,14 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture
 def client():
-    # Crear tablas de prueba
     Base.metadata.create_all(bind=engine)
     yield TestClient(app)
-    # Limpiar después de cada test
     Base.metadata.drop_all(bind=engine)
-    # Eliminar archivo de base de datos de prueba
-    if os.path.exists("test.db"):
-        os.remove("test.db")
+
+def test_crear_categoria(client):
+    response = client.post("/categorias/", json={"nombre": "Electrónicos", "descripcion": "Dispositivos electrónicos"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["nombre"] == "Electrónicos"
+
+# (Resto de las pruebas de test_categorias.py aquí)

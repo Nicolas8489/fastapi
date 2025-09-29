@@ -41,8 +41,8 @@ def verificar_setup():
         print("❌ Uvicorn NO instalado")
         return False
 
-    # Verificar archivos del proyecto
-    archivos_requeridos = ["main.py", "requirements.txt", "README.md", ".gitignore"]
+    # Verificar archivos del proyecto (ajustado para la estructura app/)
+    archivos_requeridos = ["app/main.py", "requirements.txt", "README.md", ".gitignore"]
     for archivo in archivos_requeridos:
         if Path(archivo).exists():
             print(f"✅ Archivo presente: {archivo}")
@@ -66,7 +66,7 @@ def verificar_setup():
 
     print("\n📊 RESUMEN DEL SETUP:")
     print("✅ Setup básico completado")
-    print("🚀 Listo para ejecutar: uvicorn main:app --reload")
+    print("🚀 Listo para ejecutar: uvicorn app.main:app --reload")  # Ajustado para app/main.py
     print("📖 Documentación disponible en: http://localhost:8000/docs")
     print("🔎 Verificación disponible en: http://localhost:8000/info/setup")
 

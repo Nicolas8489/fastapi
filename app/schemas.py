@@ -1,5 +1,5 @@
-from pydantic import BaseModel, validator
-from typing import List, Optional
+from pydantic import BaseModel, EmailStr, validator
+from typing import List, Optional, Literal
 
 # Schemas para Categoría
 class CategoriaBase(BaseModel):
@@ -11,11 +11,15 @@ class CategoriaCreate(CategoriaBase):
 
 class Categoria(CategoriaBase):
     id: int
+    productos: List["ProductoBase"] = []
 
     class Config:
         from_attributes = True
 
-# Schemas actualizados para Producto
+class CategoriaConProductos(Categoria):
+    productos: List["ProductoBase"] = []
+
+# Schemas para Producto
 class ProductoBase(BaseModel):
     nombre: str
     precio: float
@@ -34,10 +38,10 @@ class ProductoBase(BaseModel):
             raise ValueError('El precio debe ser mayor a 0')
         return v
 
-class ProductoCreate(ProductoBase):
+class ProductCreate(ProductoBase):
     pass
 
-class ProductoUpdate(BaseModel):
+class ProductUpdate(BaseModel):
     nombre: Optional[str] = None
     precio: Optional[float] = None
     descripcion: Optional[str] = None
@@ -49,23 +53,47 @@ class ProductoUpdate(BaseModel):
             raise ValueError('El precio debe ser mayor a 0')
         return v
 
-class Producto(ProductoBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-# Producto con información de categoría incluida
-class ProductoConCategoria(ProductoBase):
+class ProductResponse(ProductoBase):
     id: int
     categoria: Optional[Categoria] = None
 
     class Config:
         from_attributes = True
 
-# Categoría con lista de productos
-class CategoriaConProductos(Categoria):
-    productos: List[ProductoBase] = []
+# Schemas para Autenticación
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+    is_active: bool
+    role: str
 
     class Config:
         from_attributes = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    username: str
+
+class UserRoleUpdate(BaseModel):
+    role: Literal["user", "admin"]
+
+class PostCreate(BaseModel):
+    title: str
+    content: str
+
+class PostResponse(BaseModel):
+    id: int
+    title: str
+    content: str
+    author: str
