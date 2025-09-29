@@ -1,45 +1,33 @@
-# Mi Primera API FastAPI - Bootcamp
+# Proyecto FastAPI - Bootcamp
 
-**Ì±§ Desarrollador**: yosting nicolas sanchez casta√±o
-**Ì≥ß Email**: 199391542+Nicolas8489@users.noreply.github.com.
-**ÔøΩ Privacidad**: Email configurado seg√∫n mejores pr√°cticas de GitHub
-**ÔøΩÌ≥Ö Fecha de creaci√≥n**: 2025-08-02 16:12:36
-**Ì≥Ç Ruta del proyecto**: /c/Users/Aprendiz/desarrollo-personal/nicolas-sanchez-bootcamp/mi-primera-api-fastapi
-**Ì≤ª Equipo de trabajo**: BOGDFPCGMP5733
+## Descripci√≥n
+Proyecto completo del Bootcamp FastAPI, abarcando las semanas 1 a 5. Incluye configuraci√≥n inicial, CRUD b√°sico y avanzado, base de datos SQLite con SQLAlchemy, autenticaci√≥n con JWT, pruebas unitarias, y una estructura modular.
 
-## Ì¥ß Configuraci√≥n Local
+- **Semana 1**: Configuraci√≥n inicial y endpoints b√°sicos.
+- **Semana 2**: Modelos Pydantic y CRUD con base de datos simulada.
+- **Semana 3**: Introducci√≥n de SQLAlchemy y CRUD con base de datos real.
+- **Semana 4**: Relaciones entre tablas, pruebas unitarias y estad√≠sticas.
+- **Semana 5**: Autenticaci√≥n con JWT y roles de usuario.
 
+## Informaci√≥n del Desarrollador
+- **Desarrollador**: Yosting Nicol√°s S√°nchez Casta√±o  
+- **Email**: 199391542+Nicolas8489@users.noreply.github.com  
+- **Privacidad**: Email configurado seg√∫n mejores pr√°cticas de GitHub  
+- **Fecha de Creaci√≥n**: 2025-08-02 16:12:36  
+- **Ruta del Proyecto**: /c/Users/Aprendiz/desarrollo-personal/nicolas-sanchez-bootcamp/mi-primera-api-fastapi  
+- **Equipo de Trabajo**: BOGDFPCGMP5733  
+
+## Requisitos
+- Python 3.8+
+- Entorno virtual (recomendado)
+
+## Configuraci√≥n Local
 Este proyecto est√° configurado para trabajo en equipo compartido:
-
 - **Entorno virtual aislado**: `venv-personal/`
 - **Configuraci√≥n Git local**: Solo para este proyecto
 - **Dependencias independientes**: No afecta otras instalaciones
 
-## Ì∫Ä Instalaci√≥n y Ejecuci√≥n
-
-```bash
-# 1. Activar entorno virtual personal
-source venv-personal/bin/activate
-
-# 2. Instalar dependencias (si es necesario)
-pip install -r requirements.txt
-
-# 3. Ejecutar servidor de desarrollo
-uvicorn main:app --reload --port 8000
-```
-
-## Ì≥ù Notas del Desarrollador
-
-- **Configuraci√≥n Git**: Local √∫nicamente, no afecta configuraci√≥n global
-- **Email de GitHub**: Configurado con email privado para proteger informaci√≥n personal
-- **Entorno aislado**: Todas las dependencias en venv-personal/
-- **Puerto por defecto**: 8000 (cambiar si hay conflictos)
-- **Estado del bootcamp**: Semana 1 - Configuraci√≥n inicial
-
-## Ìª†Ô∏è Troubleshooting Personal
-
-- Si el entorno virtual no se activa: `rm -rf venv-personal && python3 -m venv venv-personal`
-- Si hay conflictos de puerto: cambiar --port en uvicorn
-- Si Git no funciona: verificar `git config user.name` y `git config user.email`
-- Si necesitas cambiar el email: usar el email privado de GitHub desde Settings ‚Üí Emails
-
+## Instalaci√≥n y Ejecuci√≥n
+1. Activar entorno virtual personal:
+   ```bash
+   source venv-personal/bin/activate
