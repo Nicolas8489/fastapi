@@ -63,3 +63,33 @@ def eliminar_producto(db: Session, producto_id: int):
 
 def contar_productos(db: Session):
     return db.query(models.Producto).count()
+
+    # app/crud.py (agrega estas funciones)
+def crear_plan(db: Session, plan: schemas.PlanCreate, usuario_id: int):
+    db_plan = models.Plan(**plan.dict(), usuario_id=usuario_id)
+    db.add(db_plan)
+    db.commit()
+    db.refresh(db_plan)
+    return db_plan
+
+def get_plans(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Plan).offset(skip).limit(limit).all()
+
+def get_plan(db: Session, plan_id: int):
+    return db.query(models.Plan).filter(models.Plan.id == plan_id).first()
+
+def update_plan(db: Session, plan_id: int, plan: schemas.PlanCreate):
+    db_plan = db.query(models.Plan).filter(models.Plan.id == plan_id).first()
+    if db_plan:
+        for key, value in plan.dict(exclude_unset=True).items():
+            setattr(db_plan, key, value)
+        db.commit()
+        db.refresh(db_plan)
+    return db_plan
+
+def delete_plan(db: Session, plan_id: int):
+    db_plan = db.query(models.Plan).filter(models.Plan.id == plan_id).first()
+    if db_plan:
+        db.delete(db_plan)
+        db.commit()
+    return db_plan

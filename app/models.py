@@ -26,3 +26,16 @@ class User(Base):
     password_hash = Column(String)
     is_active = Column(Boolean, default=True)
     role = Column(String, default="user")
+
+    # app/models.py (agrega esto al final)
+class Plan(Base):
+    __tablename__ = "nutriplans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nombre_plan = Column(String, index=True)
+    calorias_diarias = Column(Float)
+    duracion_semanas = Column(Integer)
+    tipo_dieta = Column(String)
+    notas_nutricionales = Column(String)
+    usuario_id = Column(Integer, ForeignKey("users.id"))
+    usuario = relationship("User", back_populates="planes")

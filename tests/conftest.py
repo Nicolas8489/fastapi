@@ -2,33 +2,68 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import os
+from app.main import app, get_db
+from app.database import Base
 
-from app.main import app
-from app.database import get_db, Base
-
-# Base de datos de prueba (en memoria)
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
-
+# Base de datos de prueba
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test_nutri.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def override_get_db():
-    try:
-        db = TestingSessionLocal()
-        yield db
-    finally:
-        db.close()
-
-app.dependency_overrides[get_db] = override_get_db
+@pytest.fixture(scope="session")
+def db():
+    Base.metadata.create_all(bind=engine)
+    yield
+    Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture
-def client():
-    # Crear tablas de prueba
-    Base.metadata.create_all(bind=engine)
+def session(db):
+    connection = engine.connect()
+    transaction = connection.begin()
+    session = TestingSessionLocal(bind=connection)
+    yield session
+    session.close()
+    transaction.rollback()
+    connection.close()
+
+@pytest.fixture
+def client(session):
+    def override_get_db():
+        try:
+            yield session
+        finally:
+            session.close()
+
+    app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
-    # Limpiar después de cada test
-    Base.metadata.drop_all(bind=engine)
-    # Eliminar archivo de base de datos de prueba
-    if os.path.exists("test.db"):
-        os.remove("test.db")
+    app.dependency_overrides.clear()
+
+# Fixture específica para Nutrición
+@pytest.fixture
+def sample_plan_data():
+    """
+    Datos de ejemplo específicos para Nutrición
+    """
+    return {
+        "nombre_plan": "Plan Dietético Básico",
+        "calorias_diarias": 1800,
+        "duracion_semanas": 4,
+        "tipo_dieta": "Baja en carbohidratos",
+        "notas_nutricionales": "Incluir suplementos vitamínicos"
+    }
+
+@pytest.fixture
+def auth_headers(client):
+    """Headers de autenticación para tests"""
+    response = client.post("/auth/register", json={
+        "username": "admin_nutri",
+        "password": "test123",
+        "role": "nutricionista"  # Rol específico de Nutrición
+    })
+
+    login_response = client.post("/auth/login", data={
+        "username": "admin_nutri",
+        "password": "test123"
+    })
+    token = login_response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}

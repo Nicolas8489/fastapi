@@ -1,8 +1,14 @@
-fastapi
-uvicorn
-pydantic
-sqlalchemy
-passlib[bcrypt]
-python-jose[cryptography]
-pytest
-httpx  # Optional, for potential API calls in week 6
+
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.2
+sqlalchemy==2.0.23
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+pytest==7.4.3
+httpx==0.25.0
+pytest-asyncio==0.21.1
+coverage==7.3.2
+pytest-mock==3.12.0
+pytest-cov==4.1.0
+pytest-html==3.2.0

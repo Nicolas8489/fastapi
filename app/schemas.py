@@ -97,3 +97,21 @@ class PostResponse(BaseModel):
     title: str
     content: str
     author: str
+
+    # app/schemas.py (agrega esto al final)
+class PlanBase(BaseModel):
+    nombre_plan: str
+    calorias_diarias: float
+    duracion_semanas: int
+    tipo_dieta: str
+    notas_nutricionales: Optional[str] = None
+
+class PlanCreate(PlanBase):
+    pass
+
+class Plan(PlanBase):
+    id: int
+    usuario_id: int
+
+    class Config:
+        from_attributes = True
