@@ -1,0 +1,9 @@
+{
+  "dashboard": {
+    "title": "API Performance - real_",
+    "panels": [
+      {"title": "Request Rate", "type": "graph", "targets": [{"expr": "rate(real_requests_total[5m])"}]},
+      {"title": "Response Time", "type": "graph", "targets": [{"expr": "rate(real_response_duration_seconds[5m])"}]}
+    ]
+  }
+}
